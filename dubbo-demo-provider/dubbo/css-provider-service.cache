@@ -1,0 +1,3 @@
+#Dubbo Registry Cache
+#Thu May 17 15:12:15 CST 2018
+com.qaf.service.HelloService=empty\://192.168.43.38\:20817/com.qaf.service.HelloService?anyhost\=true&application\=dubbo-demo-provider&category\=configurators&check\=false&default.accepts\=1000&default.accesslog\=/usr/apps/dubbo-demo-provider/accesslog.log&default.retries\=0&default.threadpool\=fixed&default.threads\=100&default.timeout\=1000000&dubbo\=2.5.3&interface\=com.qaf.service.HelloService&methods\=sayHello&pid\=8420&side\=provider&timestamp\=1526541134412
