@@ -1,5 +1,7 @@
 package com.qaf.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +18,15 @@ import com.qaf.service.HelloService;
 @Controller
 public class ConsumerController {
 
+	private static final Logger logger = LoggerFactory.getLogger(ConsumerController.class);
+
 	@Autowired
 	private HelloService helloService;
 
 	@RequestMapping("hello")
 	@ResponseBody
 	public String sayHello() {
+		logger.info("调用远程接口 sayHello");
 		return helloService.sayHello();
 	}
 
