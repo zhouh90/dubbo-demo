@@ -12,7 +12,7 @@ public class DubboProvider {
 		try {
 			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/spring-context.xml");
 			context.start();
-			System.out.print("====================start finished!===============================");
+			System.out.print("================start finished!==========================");
 
 		} catch (Exception e) {
 			e.printStackTrace();
