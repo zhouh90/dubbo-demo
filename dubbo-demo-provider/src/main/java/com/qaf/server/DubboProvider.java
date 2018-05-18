@@ -1,7 +1,3 @@
-/**
-* 上海中赢金融信息服务有限公司
-* Copyright (c) 2016, chinazyjr All Rights Reserved.
-*/
 package com.qaf.server;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
