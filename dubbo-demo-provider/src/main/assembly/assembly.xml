@@ -1,0 +1,54 @@
+<assembly
+	xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+	<id></id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		
+		<fileSet>
+		 
+		<directory>${project.basedir}/target/classes/</directory>
+			<!-- 
+			<directory>${project.basedir}/src/main/resources/</directory>-->
+			
+			<includes>
+				<include>config/*</include>
+			</includes>
+			<outputDirectory>conf</outputDirectory>
+		</fileSet>
+		<!--  自动化打包由部署端先替换再进行mavenpackage
+		<fileSet>
+			<directory>src/main/samples/</directory>
+			<outputDirectory>/conf/config</outputDirectory>
+		</fileSet> --> 
+		<fileSet>
+			<directory>src/main/scripts</directory>
+			<outputDirectory>bin</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory></directory>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>README.txt</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+
+	<dependencySets>
+	 <dependencySet>  
+            <useProjectArtifact>true</useProjectArtifact>  
+            <outputDirectory>main</outputDirectory>  
+            <includes>  
+                <include>${project.groupId}:${project.artifactId}</include>  
+            </includes>         
+        </dependencySet>  
+		<dependencySet>
+			<useProjectArtifact>false</useProjectArtifact>
+			<outputDirectory>lib</outputDirectory><!-- 将scope为runtime的依赖包打包到lib目录下。 -->
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+</assembly>  

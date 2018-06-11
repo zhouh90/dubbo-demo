@@ -1,0 +1,3 @@
+com\qaf\service\HelloService.class
+com\qaf\server\DubboProvider.class
+com\qaf\service\impl\HelloServiceImpl.class

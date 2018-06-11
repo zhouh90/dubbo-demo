@@ -13,4 +13,5 @@
 	<dubbo:consumer timeout="1200000" check="false" />
 	<!-- 订阅服务 -->
     <dubbo:reference id="helloService" interface="com.qaf.service.HelloService"/>
+    <dubbo:reference id="schedulerService" interface="com.qaf.schedule.service.SchedulerService"/>
 </beans>
