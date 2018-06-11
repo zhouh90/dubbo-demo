@@ -1,3 +1,0 @@
-#Dubbo Registry Cache
-#Mon Jun 04 14:24:08 CST 2018
-com.qaf.schedule.service.SchedulerService=empty\://192.168.43.38\:20817/com.qaf.schedule.service.SchedulerService?anyhost\=true&application\=dubbo-demo-provider&category\=configurators&check\=false&default.accepts\=1000&default.accesslog\=/usr/apps/dubbo-demo-provider/accesslog.log&default.retries\=0&default.threadpool\=fixed&default.threads\=100&default.timeout\=1000000&dubbo\=2.5.3&interface\=com.qaf.schedule.service.SchedulerService&methods\=listTasks,createSchedulerTask&pid\=9492&side\=provider&timestamp\=1528093447647
