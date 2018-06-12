@@ -20,10 +20,14 @@ import org.springframework.stereotype.Service;
 
 import com.qaf.schedule.beans.Res;
 import com.qaf.schedule.beans.SchedulerTask;
+import com.qaf.schedule.dao.ScheduleDao;
 import com.qaf.schedule.service.SchedulerService;
 
 @Service("schedulerService")
 public class SchedulerServiceImpl implements SchedulerService {
+
+	@Autowired
+	private ScheduleDao scheduleDao;
 
 	@Autowired
 	private SchedulerFactoryBean schedulerFactoryBean;
@@ -36,7 +40,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 			CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 			if (trigger != null && SchedulerTask.NOT_REPLACE_EXIST_TASK.equals(task.getReplace())) {
 				System.out.println("定时任务已经存在");
-				return Res.error().put("-1", "定时任务已经存在");
+				return Res.error("定时任务已经存在");
 			}
 			CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExpression());
 			CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(task.getTaskName(), task.getGroupName()).withSchedule(cronScheduleBuilder).build();
@@ -46,20 +50,27 @@ public class SchedulerServiceImpl implements SchedulerService {
 				JobDetail jobDetail = JobBuilder.newJob(c).withIdentity(task.getTaskName(), task.getGroupName()).build();
 				jobDetail.getJobDataMap().put("schedule", task);
 				scheduler.scheduleJob(jobDetail, cronTrigger);
-				return Res.ok().put("1", "定时任务创建成果");
+				System.out.println("保存定时任务---task:" + task);
+				try {
+					scheduleDao.saveScheduleTask(task);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return Res.error("定时任务保存失败");
+				}
+				return Res.ok("定时任务创建成果");
 			}
 			if (trigger != null && SchedulerTask.REPLACE_EXIST_TASK.equals(task.getReplace())) {
 				System.out.println("更新已有任务");
 				CronTrigger newTrigger = TriggerBuilder.newTrigger().withIdentity(task.getTaskName(), task.getGroupName()).withSchedule(cronScheduleBuilder).build();
 				scheduler.rescheduleJob(triggerKey, newTrigger);
-				return Res.ok().put("1", "定时任务已更新");
+				return Res.ok("定时任务已更新");
 			}
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return Res.error().put("-1", "定时任务创建异常");
+		return Res.error("定时任务创建异常");
 	}
 
 	public Res listTasks() {

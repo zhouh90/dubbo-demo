@@ -1,9 +1,11 @@
 package com.qaf.schedule.beans;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author 周 浩
@@ -13,6 +15,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class SchedulerTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,5 +27,7 @@ public class SchedulerTask implements Serializable {
 	private String groupName;
 	private String cronExpression;
 	private String replace;
+	private int isWork = 1;
+	private Date createTime;
 
 }

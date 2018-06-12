@@ -11,10 +11,10 @@ import com.qaf.schedule.beans.SchedulerTask;
 /**
  * @author 周 浩
  * @email zhou_eric90@163.com
- * @date 2018年5月31日 下午1:40:18
+ * @date 2018年6月12日 下午1:54:39
  * @描述
  */
-public class Task1 implements Job {
+public class Task2 implements Job {
 
 	public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 		SchedulerTask task = (SchedulerTask) jobExecutionContext.getMergedJobDataMap().get("schedule");
@@ -26,7 +26,7 @@ public class Task1 implements Job {
 	}
 
 	private void startTask(SchedulerTask task) {
-		System.out.println(new Date() + "----> Task1 == doing schedule task....");
+		System.out.println(new Date() + "----> Task2 == doing schedule task....");
 	}
 
 }

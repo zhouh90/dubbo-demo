@@ -27,6 +27,8 @@
 	<!-- Scanning the Spring Beans -->
 	<context:component-scan
 		base-package="com.qaf.schedule.service" />
+	<context:component-scan
+		base-package="com.qaf.schedule.dao" />
 
 	<bean id="schedulerFactoryBean"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -37,11 +39,13 @@
 		<property name="locations">
 			<list>
 				<value>classpath:config/context.properties</value>
+				<value>classpath:config/jdbc.properties</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- import other spring resources -->
 	<import resource="classpath:spring/dubbo/dubbo-provider.xml" />
+	<import resource="classpath:spring/applicationContext-ds.xml" />
 
 </beans>

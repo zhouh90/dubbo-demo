@@ -61,7 +61,6 @@ public class HttpClientUtil {
 
 	static class DefaultTrustStrategy implements TrustStrategy {
 
-		@Override
 		public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
 			return true;
 		}
