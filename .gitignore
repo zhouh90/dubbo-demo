@@ -10,4 +10,14 @@
 /target/
 /dubbo/*
 
-/dubbo-demo-consumer/
+/dubbo-demo-consumer/.project
+/dubbo-demo-consumer/.settings/*
+/dubbo-demo-consumer/.idea/*
+/dubbo-demo-consumer/.classpath
+/dubbo-demo-consumer/bin/*
+/dubbo-demo-consumer/logs
+/dubbo-demo-consumer/logs/*
+/dubbo-demo-consumer/target/*
+/dubbo-demo-consumer/*.iml
+/dubbo-demo-consumer/target/
+/dubbo-demo-consumer/dubbo/*
