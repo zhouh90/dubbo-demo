@@ -23,11 +23,13 @@ public class SchedulerTask implements Serializable {
 	public static final String NOT_REPLACE_EXIST_TASK = "false";
 	public static final String REPLACE_EXIST_TASK = "true";
 
+	private int id;
 	private String taskName;
 	private String groupName;
 	private String cronExpression;
 	private String replace;
 	private int isWork = 1;
 	private Date createTime;
+	private Date updateTime;
 
 }

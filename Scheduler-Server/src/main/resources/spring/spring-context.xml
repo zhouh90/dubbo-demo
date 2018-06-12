@@ -47,5 +47,6 @@
 	<!-- import other spring resources -->
 	<import resource="classpath:spring/dubbo/dubbo-provider.xml" />
 	<import resource="classpath:spring/applicationContext-ds.xml" />
+	
 
 </beans>

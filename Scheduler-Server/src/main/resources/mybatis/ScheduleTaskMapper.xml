@@ -11,10 +11,21 @@
 		create_time
 	</sql>
 	
+	<resultMap type="com.qaf.schedule.beans.SchedulerTask" id="schedule-task-result">
+		<result column="id" property="id" />
+		<result column="task_name" property="taskName" />
+		<result column="group_name" property="groupName" />
+		<result column="cron_expression" property="cronExpression" />
+		<result column="replace_exist" property="replace" />
+		<result column="is_work" property="isWork" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+		
 	<insert id="saveScheduleTask" parameterType="com.qaf.schedule.beans.SchedulerTask">
-		insert into schedule_tasks (
+		INSERT INTO schedule_tasks (
 			<include refid="schedule-cols" />
-		) values (
+		) VALUES (
 			#{taskName},
 			#{groupName},
 			#{cronExpression},
@@ -23,4 +34,40 @@
 			#{createTime}
 		)
 	</insert>
+	
+	<select id="listAllTask" resultMap="schedule-task-result">
+		SELECT * FROM schedule_tasks
+	</select>
+	
+	<select id="listTaskByCondition" parameterType="com.qaf.schedule.beans.SchedulerTask" resultMap="schedule-task-result">
+		SELECT 
+			* 
+		FROM
+			schedule_tasks
+		WHERE
+			is_work = #{isWork}
+		<if test="taskName != null">
+			AND task_name = #{taskName}
+		</if>
+		<if test="groupName != null">
+			AND group_name = #{groupName}
+		</if>
+		<if test="replace != null">
+			AND replace_exist = #{replace}
+		</if>
+	</select>
+	
+	<update id="updateScheduleTask" parameterType="com.qaf.schedule.beans.SchedulerTask">
+		UPDATE
+			schedule_tasks
+		SET
+			group_name = #{groupName},
+			cron_expression = #{cronExpression},
+			replace_exist = #{replace},
+			is_work = #{isWork}
+		WHERE
+			task_name = #{taskName}
+	</update>
+	
+	
 </mapper>

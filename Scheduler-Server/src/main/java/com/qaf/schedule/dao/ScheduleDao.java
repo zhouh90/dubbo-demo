@@ -1,5 +1,7 @@
 package com.qaf.schedule.dao;
 
+import java.util.List;
+
 import com.qaf.schedule.beans.SchedulerTask;
 
 /**
@@ -11,4 +13,11 @@ import com.qaf.schedule.beans.SchedulerTask;
 public interface ScheduleDao {
 
 	public void saveScheduleTask(SchedulerTask task) throws Exception;
+
+	public List<SchedulerTask> listAllTask();
+
+	public List<SchedulerTask> listTaskByCondition(SchedulerTask task);
+
+	public int updateScheduleTask(SchedulerTask task);
+
 }

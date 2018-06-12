@@ -1,6 +1,7 @@
 package com.qaf.schedule.dao.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,19 @@ public class ScheduleDaoImpl implements ScheduleDao {
 		if (task.getCreateTime() == null) {
 			task.setCreateTime(new Date());
 		}
-		System.out.println("sqlSession:" + sqlSession);
 		sqlSession.insert("saveScheduleTask", task);
+	}
+
+	public List<SchedulerTask> listAllTask() {
+		return sqlSession.selectList("listAllTask");
+	}
+
+	public int updateScheduleTask(SchedulerTask task) {
+		return sqlSession.update("updateScheduleTask", task);
+	}
+
+	public List<SchedulerTask> listTaskByCondition(SchedulerTask task) {
+		return sqlSession.selectList("listTaskByCondition", task);
 	}
 
 }
