@@ -26,13 +26,13 @@ public class ScheduleController {
 	@ResponseBody
 	@RequestMapping("createTask")
 	public Res createTask(@RequestBody SchedulerTask task) {
-		Res res = Res.ok();
+//		Res res = Res.ok();
 //		SchedulerTask task = new SchedulerTask();
 		System.out.println("taskname:" + task.getTaskName());
 		System.out.println("groupname:" + task.getGroupName());
 		System.out.println("cron:" + task.getCronExpression());
 		System.out.println("replace" + task.getReplace());
-//		Res res = schedulerService.createSchedulerTask(task);
+		Res res = schedulerService.createSchedulerTask(task);
 		return res;
 	}
 
