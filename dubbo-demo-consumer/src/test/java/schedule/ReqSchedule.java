@@ -1,6 +1,8 @@
 package schedule;
 
-import com.alibaba.fastjson.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.qaf.utils.HttpClientUtil;
 
 /**
@@ -13,12 +15,13 @@ public class ReqSchedule {
 
 	public static void main(String[] args) {
 		String url = "http://127.0.0.1:8080/schedule/createTask";
-		JSONObject object = new JSONObject();
-		object.put("taskName", "Task1");
-		object.put("groupName", "TaskGroup");
-		object.put("cronExpression", "*/10 * * * * ?");
-		object.put("replace", "true");
-		String result = HttpClientUtil.postSendJson(url, object.toJSONString());
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("taskName", "Task1");
+		param.put("groupName", "TaskGroup");
+		param.put("cronExpression", "*/10 * * * * ?");
+		param.put("replace", "true");
+//		String result = HttpClientUtil.postSendJson(url, object.toJSONString());
+		String result = HttpClientUtil.doPost(url, param, new HashMap<String, String>());
 		System.out.println(result);
 	}
 

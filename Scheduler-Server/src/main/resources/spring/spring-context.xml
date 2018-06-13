@@ -25,10 +25,8 @@
 	<!-- 采用注释的方式配置bean -->
 	<context:annotation-config />
 	<!-- Scanning the Spring Beans -->
-	<context:component-scan
-		base-package="com.qaf.schedule.service" />
-	<context:component-scan
-		base-package="com.qaf.schedule.dao" />
+	<context:component-scan	base-package="com.qaf.schedule.service" />
+	<context:component-scan	base-package="com.qaf.schedule.dao" />
 
 	<bean id="schedulerFactoryBean"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

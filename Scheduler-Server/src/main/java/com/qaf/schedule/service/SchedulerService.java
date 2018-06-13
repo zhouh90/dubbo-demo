@@ -13,6 +13,10 @@ public interface SchedulerService {
 
 	Res createSchedulerTask(SchedulerTask task);
 
-	Res listTasks();
+	Res listAllTasks();
+
+	Res listTasks(SchedulerTask task);
+
+	Res updateTask(SchedulerTask task);
 
 }

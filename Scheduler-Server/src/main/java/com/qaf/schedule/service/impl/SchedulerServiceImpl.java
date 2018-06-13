@@ -6,6 +6,10 @@ package com.qaf.schedule.service.impl;
  * @描述 
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -35,7 +39,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	public Res createSchedulerTask(SchedulerTask task) {
 		System.out.println("schedulerFactoryBean:" + schedulerFactoryBean);
 		Scheduler scheduler = schedulerFactoryBean.getScheduler();
-		TriggerKey triggerKey = TriggerKey.triggerKey(task.getTaskName(), task.getGroupName());
+		TriggerKey triggerKey = TriggerKey.triggerKey(task.getTaskName());
 		try {
 			CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
 			if (trigger != null && SchedulerTask.NOT_REPLACE_EXIST_TASK.equals(task.getReplace())) {
@@ -73,9 +77,33 @@ public class SchedulerServiceImpl implements SchedulerService {
 		return Res.error("定时任务创建异常");
 	}
 
-	public Res listTasks() {
-		// TODO
-		return null;
+	public Res listTasks(SchedulerTask task) {
+		List<SchedulerTask> list = new ArrayList<SchedulerTask>();
+		if (task == null) {
+			list = scheduleDao.listAllTask();
+		} else {
+			task.setTaskName((StringUtils.isBlank(task.getTaskName()) ? null : task.getTaskName()));
+			task.setGroupName((StringUtils.isBlank(task.getGroupName()) ? null : task.getGroupName()));
+			list = scheduleDao.listTaskByCondition(task);
+		}
+		return Res.ok().data(list);
+	}
+
+	public Res updateTask(SchedulerTask task) {
+		if (task == null) {
+			Res.error("更新任务参数为空");
+		}
+		try {
+			scheduleDao.updateScheduleTask(task);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Res.error("更新任务失败");
+		}
+		return Res.ok("任务更新成功");
+	}
+
+	public Res listAllTasks() {
+		return this.listTasks(null);
 	}
 
 }
