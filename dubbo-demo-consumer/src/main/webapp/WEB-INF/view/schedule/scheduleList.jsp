@@ -24,7 +24,7 @@
 				<div class="col-md-3">
 	       			<select id="s-isWork" class="form-control">
 	       				<option value="1">执行中</option>
-	       				<option value="0">已停止</option>
+	       				<option value="2">已停止</option>
 	       			</select>
 	 			</div>
 	 			<div class="col-md-3">
@@ -32,7 +32,7 @@
 	 			</div>
  			</div>
  			<hr>
-			<table class="table table-striped">  
+			<table class="table">  
 		        <thead>  
 		            <tr>
 		            	<th>任务类名</th>

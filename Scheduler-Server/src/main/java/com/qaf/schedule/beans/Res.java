@@ -56,4 +56,8 @@ public class Res extends HashMap<String, Object> {
 		super.put("data", data);
 		return this;
 	}
+
+	public Object getData() {
+		return super.get("data");
+	}
 }

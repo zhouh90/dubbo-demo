@@ -40,23 +40,24 @@ public class ScheduleController {
 		return "/schedule/scheduleEdit";
 	}
 
-	@ResponseBody
 	@RequestMapping("createTask")
+	@ResponseBody
 	public Res createTask(SchedulerTask task) {
-		Res res = schedulerService.createSchedulerTask(task);
+		Res res = schedulerService.saveScheduleTask(task);
 		return res;
 	}
 
-	@ResponseBody
 	@RequestMapping("listTasks")
+	@ResponseBody
 	public Res listTask(SchedulerTask task) {
-		System.out.println("taskname:" + task.getTaskName());
-		System.out.println("groupname:" + task.getGroupName());
-		System.out.println("cron:" + task.getCronExpression());
-		System.out.println("replace:" + task.getReplace());
-		System.out.println("isWork:" + task.getIsWork());
 		Res res = schedulerService.listTasks(task);
-//		Res res = new Res();
+		return res;
+	}
+
+	@RequestMapping("updateTask")
+	@ResponseBody
+	public Res updateTask(SchedulerTask task) {
+		Res res = schedulerService.updateTask(task);
 		return res;
 	}
 

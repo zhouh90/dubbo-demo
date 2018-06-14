@@ -34,7 +34,6 @@ $(function(){
 	}
 	
 	function listTable(data){
-		console.log(data);
 		if(!data || data.length == 0){
 			$('#tasks-body').html('');
 			showtoastFromDiv("search","没有定时任务","inline-block",1000);

@@ -33,7 +33,6 @@ function createTask(){
 		return;
 	}
 	var replaceExist = $('#replaceExist').val();
-	console.log("replaceExist:"+replaceExist);
 	$.ajax({  
         cache: true,  
         type: "POST",  

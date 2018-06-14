@@ -30,7 +30,7 @@
 			#{groupName},
 			#{cronExpression},
 			#{replace},
-			#{isWork}
+			#{isWork},
 			#{createTime}
 		)
 	</insert>
@@ -45,7 +45,10 @@
 		FROM
 			schedule_tasks
 		WHERE
-			is_work = #{isWork}
+			1 = 1
+		<if test="isWork != 0">
+			AND	is_work = #{isWork}
+		</if>
 		<if test="taskName != null">
 			AND task_name = #{taskName}
 		</if>
@@ -61,10 +64,19 @@
 		UPDATE
 			schedule_tasks
 		SET
-			group_name = #{groupName},
-			cron_expression = #{cronExpression},
-			replace_exist = #{replace},
-			is_work = #{isWork}
+			task_name = #{taskName}
+		<if test="groupName != null">
+			,group_name = #{groupName}
+		</if>
+		<if test="cronExpression != null">
+			,cron_expression = #{cronExpression}
+		</if>
+		<if test="replace != null">
+			,replace_exist = #{replace}
+		</if>
+		<if test="isWork != 0">
+			,is_work = #{isWork}
+		</if>
 		WHERE
 			task_name = #{taskName}
 	</update>
