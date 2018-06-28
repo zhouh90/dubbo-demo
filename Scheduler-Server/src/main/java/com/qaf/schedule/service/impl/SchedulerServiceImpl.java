@@ -43,50 +43,29 @@ public class SchedulerServiceImpl implements SchedulerService {
 	@Autowired
 	private SchedulerFactoryBean schedulerFactoryBean;
 
-//	public Res createSchedulerTask(SchedulerTask task) {
-//		Scheduler scheduler = schedulerFactoryBean.getScheduler();
-//		TriggerKey triggerKey = TriggerKey.triggerKey(task.getTaskName());
-//		try {
-//			CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-//			if (trigger != null && SchedulerTask.NOT_REPLACE_EXIST_TASK.equals(task.getReplace())) {
-//				logger.info("定时任务已经存在");
-//				return Res.error("定时任务已经存在");
-//			}
-//			CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExpression());
-//			CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(task.getTaskName(), task.getGroupName()).withSchedule(cronScheduleBuilder).build();
-//			if (trigger == null) {
-//				Class c = Class.forName("com.qaf.schedule.task." + task.getTaskName());
-//				JobDetail jobDetail = JobBuilder.newJob(c).withIdentity(task.getTaskName(), task.getGroupName()).build();
-//				jobDetail.getJobDataMap().put("schedule", task);
-//				scheduler.scheduleJob(jobDetail, cronTrigger);
-//				logger.info("保存定时任务---task:{}", task);
-//				try {
-//					scheduleDao.saveScheduleTask(task);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					return Res.error("定时任务保存失败");
-//				}
-//				return Res.ok("定时任务创建成果");
-//			}
-//			if (trigger != null && SchedulerTask.REPLACE_EXIST_TASK.equals(task.getReplace())) {
-//				CronTrigger newTrigger = TriggerBuilder.newTrigger().withIdentity(task.getTaskName(), task.getGroupName()).withSchedule(cronScheduleBuilder).build();
-//				scheduler.rescheduleJob(triggerKey, newTrigger);
-//				try {
-//					scheduleDao.updateScheduleTask(task);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//					return Res.error("定时任务更新失败");
-//				}
-//				logger.info("更新已有任务");
-//				return Res.ok("定时任务已更新");
-//			}
-//		} catch (SchedulerException e) {
-//			e.printStackTrace();
-//		} catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		return Res.error("定时任务创建异常");
-//	}
+	public Res createSchedulerTaskOnly(SchedulerTask task) {
+		Scheduler scheduler = schedulerFactoryBean.getScheduler();
+		TriggerKey triggerKey = TriggerKey.triggerKey(task.getTaskName(), task.getGroupName());
+		try {
+			CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+			if (trigger != null) {
+				logger.info("定时任务已经存在");
+				return Res.error("定时任务已经存在");
+			}
+			CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExpression());
+			CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(task.getTaskName(), task.getGroupName()).withSchedule(cronScheduleBuilder).build();
+			Class c = Class.forName("com.qaf.schedule.task." + task.getTaskName());
+			JobDetail jobDetail = JobBuilder.newJob(c).withIdentity(task.getTaskName(), task.getGroupName()).build();
+			jobDetail.getJobDataMap().put("schedule", task);
+			scheduler.scheduleJob(jobDetail, cronTrigger);
+			return Res.ok("定时任务创建成功");
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return Res.error("定时任务创建异常");
+	}
 
 	public Res listTasks(SchedulerTask task) {
 		List<SchedulerTask> list = new ArrayList<SchedulerTask>();
@@ -110,7 +89,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 			e.printStackTrace();
 			return Res.error("更新任务失败");
 		}
-		return Res.ok("任务更新成功");
+		return executeScheduleTask(task, UPDATE, task.getIsWork());
 	}
 
 	public Res listAllTasks() {
@@ -147,18 +126,18 @@ public class SchedulerServiceImpl implements SchedulerService {
 		TriggerKey triggerKey = TriggerKey.triggerKey(task.getTaskName());
 		try {
 			CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-			if (trigger != null && SchedulerTask.NOT_REPLACE_EXIST_TASK.equals(execType)) {
+			if (trigger != null && NEWADD.equals(execType)) {
 				logger.info("定时任务已经存在");
 				return Res.error("定时任务已经存在");
 			}
 
-			if (trigger == null && SchedulerTask.REPLACE_EXIST_TASK.equals(execType)) {
+			if (trigger == null && UPDATE.equals(execType)) {
 				logger.info("定时任务不存在");
 				return Res.error("定时任务不存在");
 			}
 
 			if (workStatus == SchedulerTask.TASK_WORK_ON) {
-				if (trigger != null && SchedulerTask.REPLACE_EXIST_TASK.equals(execType)) {
+				if (trigger != null && UPDATE.equals(execType)) {
 					CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExpression());
 					CronTrigger newTrigger = TriggerBuilder.newTrigger().withIdentity(task.getTaskName(), task.getGroupName()).withSchedule(cronScheduleBuilder).build();
 					scheduler.rescheduleJob(triggerKey, newTrigger);
@@ -166,7 +145,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 					return Res.ok("定时任务已更新");
 				}
 
-				if (trigger == null && SchedulerTask.NOT_REPLACE_EXIST_TASK.equals(execType)) {
+				if (trigger == null && NEWADD.equals(execType)) {
 					CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(task.getCronExpression());
 					CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(task.getTaskName(), task.getGroupName()).withSchedule(cronScheduleBuilder).build();
 					Class c = Class.forName("com.qaf.schedule.task." + task.getTaskName());
@@ -175,9 +154,13 @@ public class SchedulerServiceImpl implements SchedulerService {
 					scheduler.scheduleJob(jobDetail, cronTrigger);
 					return Res.ok("定时任务创建成功");
 				}
-			} else {
-				// TODO
-				return Res.error("尚不支持终止任务");
+			} else {// isWork = off ,必定在更新
+				if (trigger == null) {
+					return Res.error("不存在该任务");
+				} else {
+					scheduler.pauseTrigger(triggerKey);
+					return Res.error("任务已终止");
+				}
 			}
 
 		} catch (SchedulerException e) {
@@ -186,6 +169,16 @@ public class SchedulerServiceImpl implements SchedulerService {
 			e.printStackTrace();
 		}
 		return Res.error("定时任务创建异常");
+	}
+
+	public Res restartRunningTasks(SchedulerTask param) {
+		List<SchedulerTask> tasks = scheduleDao.listTaskByCondition(param);
+		if (tasks != null && tasks.size() > 0) {
+			for (SchedulerTask schedulerTask : tasks) {
+				// TODO start task
+			}
+		}
+		return null;
 	}
 
 }

@@ -43,6 +43,7 @@ public class ScheduleController {
 	@RequestMapping("createTask")
 	@ResponseBody
 	public Res createTask(SchedulerTask task) {
+		task.setIsWork(SchedulerTask.TASK_WORK_ON);
 		Res res = schedulerService.saveScheduleTask(task);
 		return res;
 	}
@@ -58,6 +59,27 @@ public class ScheduleController {
 	@ResponseBody
 	public Res updateTask(SchedulerTask task) {
 		Res res = schedulerService.updateTask(task);
+		return res;
+	}
+
+	@RequestMapping("off")
+	@ResponseBody
+	public Res shutdown() {
+		SchedulerTask task = new SchedulerTask();
+		task.setIsWork(2);
+		task.setTaskName("Task1");
+		Res res = schedulerService.updateTask(task);
+		return res;
+	}
+
+	@RequestMapping("createTaskOnly")
+	@ResponseBody
+	public Res createTaskOnly() {
+		SchedulerTask task = new SchedulerTask();
+		task.setTaskName("Task1");
+		task.setGroupName("taskgroup1");
+		task.setCronExpression("*/10 * * * * ?");
+		Res res = schedulerService.createSchedulerTaskOnly(task);
 		return res;
 	}
 

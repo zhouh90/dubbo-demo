@@ -11,7 +11,7 @@ import com.qaf.schedule.beans.SchedulerTask;
 
 public interface SchedulerService {
 
-//	Res createSchedulerTask(SchedulerTask task);
+	Res createSchedulerTaskOnly(SchedulerTask task);
 
 	Res saveScheduleTask(SchedulerTask task);
 
@@ -20,5 +20,7 @@ public interface SchedulerService {
 	Res listTasks(SchedulerTask task);
 
 	Res updateTask(SchedulerTask task);
+
+	Res restartRunningTasks(SchedulerTask task);
 
 }
